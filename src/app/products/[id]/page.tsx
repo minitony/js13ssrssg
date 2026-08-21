@@ -2,12 +2,11 @@ import { Metadata } from 'next';
 import products from '@/app/products/products.json';
 
 export async function generateStaticParams() {
-  // Build static params from product IDs
   return products.map((product) => ({ id: product.id }));
 }
 
-export default function ProductPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function ProductPage({ params }: { params: { id: string } }) {
+  const { id } = await params;
   const product = products.find((p) => p.id === id);
 
   if (!product) {
@@ -30,7 +29,7 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const { id } = params;
+  const { id } = await params;
   const product = products.find((p) => p.id === id);
   return {
     title: product?.name ?? 'Product',
